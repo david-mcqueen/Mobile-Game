@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>21</integer>
+	<integer>25</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -184,7 +184,7 @@
 							<key>collisionMask</key>
 							<array/>
 							<key>collisionType</key>
-							<string></string>
+							<string>platform</string>
 							<key>cornerRadius</key>
 							<real>0.0</real>
 							<key>density</key>
@@ -328,6 +328,8 @@
 								<array/>
 							</dict>
 						</array>
+						<key>selected</key>
+						<true/>
 					</dict>
 					<dict>
 						<key>UUID</key>
@@ -458,7 +460,7 @@
 					</dict>
 					<dict>
 						<key>UUID</key>
-						<integer>20</integer>
+						<integer>22</integer>
 						<key>baseClass</key>
 						<string>CCSprite</string>
 						<key>children</key>
@@ -484,7 +486,7 @@
 							<key>collisionMask</key>
 							<array/>
 							<key>collisionType</key>
-							<string></string>
+							<string>platform</string>
 							<key>cornerRadius</key>
 							<real>0.0</real>
 							<key>density</key>
@@ -553,8 +555,8 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
-									<real>77</real>
-									<real>194</real>
+									<real>73.018508911132812</real>
+									<real>254.19215393066406</real>
 									<integer>0</integer>
 									<integer>0</integer>
 									<integer>0</integer>
@@ -578,9 +580,9 @@
 								<string>ScaleLock</string>
 								<key>value</key>
 								<array>
-									<real>0.35844707489013672</real>
-									<real>0.21963039040565491</real>
-									<false/>
+									<real>0.24913348257541656</real>
+									<real>0.24913348257541656</real>
+									<true/>
 									<integer>0</integer>
 								</array>
 							</dict>
@@ -628,8 +630,6 @@
 								<array/>
 							</dict>
 						</array>
-						<key>selected</key>
-						<true/>
 					</dict>
 				</array>
 				<key>customClass</key>
@@ -862,7 +862,7 @@
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>0.0</real>
+			<real>1</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>

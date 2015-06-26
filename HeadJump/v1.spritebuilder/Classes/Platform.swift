@@ -8,8 +8,8 @@
 
 import Foundation
 
-public class Platform: CCNode{
-    var platform: CCNode!;
+public class Platform: CCSprite{
+    var platform: CCSprite!;
     
     func didLoadFromCCB(){
         platform.physicsBody.sensor = true;
