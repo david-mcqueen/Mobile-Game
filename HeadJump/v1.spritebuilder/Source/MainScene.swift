@@ -27,6 +27,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
     let distanceBetweenPlatforms : CGFloat = 160;
     var newPlatformMinHeight: UInt32!; //The min height a new platform can appear
     var newPlatformTopArea: UInt32!;
+    let distanceFromEdgeToTriggerNewPlatform = 75;
     
     //MARK:- Game variables
     var platforms: [NewPlatform] = [];
@@ -44,7 +45,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
         
         
         gamePhysicsNode.collisionDelegate = self;
-        gamePhysicsNode.debugDraw = true; //TODO:- Remove Debug
+        gamePhysicsNode.debugDraw = false; //TODO:- Remove Debug
         
         spawnNewPlatform();
         spawnNewPlatform();
@@ -60,14 +61,25 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
             let platformWorldPosition = gamePhysicsNode.convertToWorldSpace(platform.position);
             let platformScreenPosition = convertToNodeSpace(platformWorldPosition);
             
-            //obstacle moved past the bottom of the screen?
-            if (platformScreenPosition.x < -100 || platformScreenPosition.x > backgroundWidth + 100){
-                println("Remove from parent")
-                platform.removeFromParent();
-                platforms.removeAtIndex(find(platforms, platform)!);
+            //obstacle nearly complete its move across the screen?
+            if ((platformScreenPosition.x < -75 && platform.MoveRight_Left)
+                || (platformScreenPosition.x > backgroundWidth - 75) && !platform.MoveRight_Left){
                 
-                //for each removed obstacle, add a new one
-                spawnNewPlatform();
+                    
+                    if (!platform.PlatformDead){
+                        //Generate a new platform when near the edge of the screen
+                        spawnNewPlatform();
+                        
+                        //Mark so we dont create another new platform
+                        platform.PlatformDead = true;
+                    }
+                
+                    //Only remove when off the screen
+                    if ((platformScreenPosition.x < -100 && platform.MoveRight_Left)
+                        || (platformScreenPosition.x > backgroundWidth + 100) && !platform.MoveRight_Left){
+                        platform.removeFromParent();
+                        platforms.removeAtIndex(find(platforms, platform)!);
+                    }
             }
         }
     }

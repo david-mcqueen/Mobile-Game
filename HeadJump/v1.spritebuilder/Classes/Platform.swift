@@ -11,7 +11,8 @@ import Foundation
 public class NewPlatform: CCNode{
     weak var newGround: CCNode!;
     
-    var MoveRight_Left:Bool = false;
+    var MoveRight_Left: Bool = false;
+    var PlatformDead: Bool = false;
     
     func didLoadFromCCB(){
         newGround.physicsBody.sensor = true;
