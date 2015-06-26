@@ -6,38 +6,47 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
     weak var hero: CCSprite!;
     weak var background: CCNode!;
     weak var gamePhysicsNode: CCPhysicsNode!;
-    weak var platform: CCNode!;
     weak var newPlatform: CCSprite!;
     weak var platformLayer : CCNode!;
     
-    
-    //MARK:- Game variables
+    //MARK:- Device constants
     var backgroundWidth: CGFloat!;
     var backgroundWidthHalf: CGFloat!;
-    var platforms: [CCNode] = [];
-    let firstPlatformPosition : CGFloat = 280;
-    let distanceBetweenPlatforms : CGFloat = 160;
-    let platformWidth: CGFloat = 100;
-    let platformHeight: CGFloat = 30;
-    let maxJumps: Int = 300; //The # of jumps before needing to land on a platform
-    var currentJumps: Int = 0;
+    var backgroundHeight: CGFloat!;
     
     //MARK:- Game constants / Settings
     let verticalImpulse: CGFloat = 1500;
     let horizontalImpulse: CGFloat = 200;
-    let blockMoveSpeed: CGFloat = 0;
+    let blockMoveSpeed: CGFloat = 30;
     let maxVerticalVelocity: Float = 200;
+    let newPlatformHeight: CGFloat = 0.6; //The top % that a new platform can be generated in
+    let maxJumps: Int = 300; //The # of jumps before needing to land on a platform
+    let platformWidth: CGFloat = 100;
+    let platformHeight: CGFloat = 30;
+    let firstPlatformPosition : CGFloat = 280;
+    let distanceBetweenPlatforms : CGFloat = 160;
+    var newPlatformMinHeight: UInt32!; //The min height a new platform can appear
+    var newPlatformTopArea: UInt32!;
+    
+    //MARK:- Game variables
+    var platforms: [NewPlatform] = [];
+    var lastPlatformPosition: CGFloat = 280;
+    var currentJumps: Int = 0;
     
 
     func didLoadFromCCB() {
         userInteractionEnabled = true;
         backgroundWidth = background.contentSize.width;
         backgroundWidthHalf = backgroundWidth/2;
+        backgroundHeight = background.contentSize.height;
+        newPlatformTopArea = (UInt32)(backgroundHeight * newPlatformHeight);
+        newPlatformMinHeight = (UInt32)(backgroundHeight * (1 - newPlatformHeight));
         
         
         gamePhysicsNode.collisionDelegate = self;
-        gamePhysicsNode.debugDraw = false; //TODO:- Remove Debug
+        gamePhysicsNode.debugDraw = true; //TODO:- Remove Debug
         
+        spawnNewPlatform();
         spawnNewPlatform();
     }
     
@@ -45,10 +54,9 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
         let velocityY = clampf(Float(hero.physicsBody.velocity.y), -Float(CGFloat.max), maxVerticalVelocity);
         hero.physicsBody.velocity = ccp(hero.physicsBody.velocity.x, CGFloat(velocityY));
         
-        platform.position = ccp(platform.position.x + blockMoveSpeed * CGFloat(delta), platform.position.y);
         
         for platform in platforms.reverse(){
-            platform.position = ccp(platform.position.x + blockMoveSpeed * CGFloat(delta), platform.position.y);
+            platform.position = ccp(platform.position.x + blockMoveSpeed * CGFloat(delta) * (platform.MoveRight_Left ? -1 : 1), platform.position.y);
             let platformWorldPosition = gamePhysicsNode.convertToWorldSpace(platform.position);
             let platformScreenPosition = convertToNodeSpace(platformWorldPosition);
             
@@ -73,15 +81,28 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
         
         //create and add a new obstacle
         
-        let platform: CCSprite = CCBReader.load("Platform") as! CCSprite;
+        let newPlatform: NewPlatform = CCBReader.load("NewPlatform") as! NewPlatform;
         
-        platform.position = ccp(0, prevPlatformPos + distanceBetweenPlatforms);
-        platform.position.x = 100;
-        platform.position.y = 400;
-        resizeSprite(platform, width: platformWidth, height: platformHeight);
+        resizeSprite(newPlatform, width: platformWidth, height: platformHeight);
+        generateRandomPlatformPosition(newPlatform);
         
-        gamePhysicsNode.addChild(platform);
-        platforms.append(platform);
+        newPlatform.physicsBody.collisionType = "platform";
+        platformLayer.addChild(newPlatform);
+        platforms.append(newPlatform);
+    }
+    
+    func generateRandomPlatformPosition(sprite: NewPlatform){
+        let randomPrecision: UInt32 = 100;
+        let random = arc4random_uniform(randomPrecision);
+        var currentPlayerHeight: CGFloat = 200;
+        let randomHeight = arc4random_uniform(newPlatformTopArea) + newPlatformMinHeight;
+        
+        sprite.MoveRight_Left = (random % 2 == 0) ? true : false; //Even number move right to left
+        
+        let yPos = CGFloat(randomHeight);
+        
+        let xPos: CGFloat = sprite.MoveRight_Left ? backgroundWidth + 100 : -100;
+        sprite.position = ccp(xPos, yPos);
     }
     
     
@@ -120,7 +141,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
     }
     
     
-    func resizeSprite(sprite: CCSprite, width: CGFloat, height: CGFloat){
+    func resizeSprite(sprite: NewPlatform, width: CGFloat, height: CGFloat){
         sprite.scaleX = (Float)(width / sprite.contentSize.width);
         sprite.scaleY = (Float)(height / sprite.contentSize.height);
     }

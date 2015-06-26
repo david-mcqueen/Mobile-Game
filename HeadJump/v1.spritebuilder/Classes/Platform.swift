@@ -8,10 +8,12 @@
 
 import Foundation
 
-public class Platform: CCSprite{
-    var platform: CCSprite!;
+public class NewPlatform: CCNode{
+    weak var newGround: CCNode!;
+    
+    var MoveRight_Left:Bool = false;
     
     func didLoadFromCCB(){
-        platform.physicsBody.sensor = true;
+        newGround.physicsBody.sensor = true;
     }
 }
