@@ -5,6 +5,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
     //MARK:- SpriteBuilder Objects
     weak var hero: CCSprite!;
     weak var background: CCNode!;
+    weak var background2: CCNode!;
     weak var gamePhysicsNode: CCPhysicsNode!;
     weak var newPlatform: CCSprite!;
     weak var platformLayer : CCNode!;
@@ -28,11 +29,15 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
     var newPlatformMinHeight: UInt32!; //The min height a new platform can appear
     var newPlatformTopArea: UInt32!;
     let distanceFromEdgeToTriggerNewPlatform = 75;
+    let playerDistanceFromCameraBottom: CGFloat = 0.3; //The % distance of screen height from bottom
+    var playerHeightPosCamera: CGFloat!;
+    let staticScrollSpeed: CGFloat = 5;
     
     //MARK:- Game variables
     var platforms: [NewPlatform] = [];
     var lastPlatformPosition: CGFloat = 280;
     var currentJumps: Int = 0;
+    var lastPlayerHeight: CGFloat = 0.0;;
     
 
     func didLoadFromCCB() {
@@ -42,7 +47,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
         backgroundHeight = background.contentSize.height;
         newPlatformTopArea = (UInt32)(backgroundHeight * newPlatformHeight);
         newPlatformMinHeight = (UInt32)(backgroundHeight * (1 - newPlatformHeight));
-        
+        playerHeightPosCamera = backgroundHeight * playerDistanceFromCameraBottom;
         
         gamePhysicsNode.collisionDelegate = self;
         gamePhysicsNode.debugDraw = false; //TODO:- Remove Debug
@@ -51,13 +56,47 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
         spawnNewPlatform();
     }
     
+    
     override func update(delta: CCTime){
         let velocityY = clampf(Float(hero.physicsBody.velocity.y), -Float(CGFloat.max), maxVerticalVelocity);
         hero.physicsBody.velocity = ccp(hero.physicsBody.velocity.x, CGFloat(velocityY));
+        hero.position.y = hero.position.y - (staticScrollSpeed * CGFloat(delta))
+        
+        var heightChange = hero.position.y - lastPlayerHeight;
+        
+        //Only move the camera if the player has done upwards
+        //if heightChange > 0{
+            var bg1Pos: CGPoint = background.position;
+            var bg2Pos: CGPoint = background2.position;
+            bg1Pos.y -= staticScrollSpeed;
+            bg2Pos.y -= staticScrollSpeed;
+            println("Height change \(heightChange)");
+            
+            if (bg1Pos.y < 0){
+                bg1Pos.y += background.contentSize.height;
+                bg2Pos.y += background2.contentSize.height;
+            }
+            
+            bg1Pos.y = CGFloat(Int(bg1Pos.y));
+            bg2Pos.y = CGFloat(Int(bg2Pos.y));
+            
+            background.position = bg1Pos;
+            background2.position = bg2Pos;
+            
+            var cameraHeight: CGFloat = hero.position.y + (backgroundHeight * playerDistanceFromCameraBottom);
+            
+            lastPlayerHeight = hero.position.y;
+//        }else{
+//            heightChange = 0;
+//        }
+        
         
         
         for platform in platforms.reverse(){
-            platform.position = ccp(platform.position.x + blockMoveSpeed * CGFloat(delta) * (platform.MoveRight_Left ? -1 : 1), platform.position.y);
+            platform.position = ccp(
+                platform.position.x + blockMoveSpeed * CGFloat(delta) * (platform.MoveRight_Left ? -1 : 1),
+                platform.position.y - (staticScrollSpeed * CGFloat(delta))
+            );
             let platformWorldPosition = gamePhysicsNode.convertToWorldSpace(platform.position);
             let platformScreenPosition = convertToNodeSpace(platformWorldPosition);
             
@@ -131,6 +170,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
             return false;
         }
     }
+    
     
     override func touchBegan(touch: CCTouch!, withEvent event: CCTouchEvent!) {
         var touchLocation = touch.locationInNode(self);
