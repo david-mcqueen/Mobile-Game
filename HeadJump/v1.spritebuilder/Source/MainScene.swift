@@ -9,6 +9,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
     weak var gamePhysicsNode: CCPhysicsNode!;
     weak var newPlatform: CCSprite!;
     weak var platformLayer : CCNode!;
+    weak var contentNode: CCNode!
     
     //MARK:- Device constants
     var backgroundWidth: CGFloat!;
@@ -31,13 +32,13 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
     let distanceFromEdgeToTriggerNewPlatform = 75;
     let playerDistanceFromCameraBottom: CGFloat = 0.3; //The % distance of screen height from bottom
     var playerHeightPosCamera: CGFloat!;
-    let staticScrollSpeed: CGFloat = 5;
+    var platformMoveSpeed = 5.0;
     
     //MARK:- Game variables
     var platforms: [NewPlatform] = [];
     var lastPlatformPosition: CGFloat = 280;
     var currentJumps: Int = 0;
-    var lastPlayerHeight: CGFloat = 0.0;;
+    var lastPlayerHeight: CGFloat = 0.0;
     
 
     func didLoadFromCCB() {
@@ -50,27 +51,34 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
         playerHeightPosCamera = backgroundHeight * playerDistanceFromCameraBottom;
         
         gamePhysicsNode.collisionDelegate = self;
-        gamePhysicsNode.debugDraw = false; //TODO:- Remove Debug
+        gamePhysicsNode.debugDraw = true; //TODO:- Remove Debug
         
         spawnNewPlatform();
         spawnNewPlatform();
     }
     
     
+    //Updated when Physics updates
+    override func fixedUpdate(delta: CCTime) {
+        
+    }
+    
+    
     override func update(delta: CCTime){
         let velocityY = clampf(Float(hero.physicsBody.velocity.y), -Float(CGFloat.max), maxVerticalVelocity);
         hero.physicsBody.velocity = ccp(hero.physicsBody.velocity.x, CGFloat(velocityY));
-        hero.position.y = hero.position.y - (staticScrollSpeed * CGFloat(delta))
         
         var heightChange = hero.position.y - lastPlayerHeight;
+        var heightToMove:CGFloat  = 0;
         
         //Only move the camera if the player has done upwards
-        //if heightChange > 0{
+        if heightChange > 0{
+            heightToMove = heightChange;
+            println(heightToMove);
             var bg1Pos: CGPoint = background.position;
             var bg2Pos: CGPoint = background2.position;
-            bg1Pos.y -= staticScrollSpeed;
-            bg2Pos.y -= staticScrollSpeed;
-            println("Height change \(heightChange)");
+            bg1Pos.y -= heightToMove;
+            bg2Pos.y -= heightToMove;
             
             if (bg1Pos.y < 0){
                 bg1Pos.y += background.contentSize.height;
@@ -83,27 +91,18 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
             background.position = bg1Pos;
             background2.position = bg2Pos;
             
-            var cameraHeight: CGFloat = hero.position.y + (backgroundHeight * playerDistanceFromCameraBottom);
-            
             lastPlayerHeight = hero.position.y;
-//        }else{
-//            heightChange = 0;
-//        }
-        
-        
+            
+        }
         
         for platform in platforms.reverse(){
-            platform.position = ccp(
-                platform.position.x + blockMoveSpeed * CGFloat(delta) * (platform.MoveRight_Left ? -1 : 1),
-                platform.position.y - (staticScrollSpeed * CGFloat(delta))
-            );
             let platformWorldPosition = gamePhysicsNode.convertToWorldSpace(platform.position);
             let platformScreenPosition = convertToNodeSpace(platformWorldPosition);
             
+            platform.position.y = platform.position.y - heightToMove;
             //obstacle nearly complete its move across the screen?
             if ((platformScreenPosition.x < -75 && platform.MoveRight_Left)
                 || (platformScreenPosition.x > backgroundWidth - 75) && !platform.MoveRight_Left){
-                
                     
                     if (!platform.PlatformDead){
                         //Generate a new platform when near the edge of the screen
@@ -137,9 +136,13 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate {
         resizeSprite(newPlatform, width: platformWidth, height: platformHeight);
         generateRandomPlatformPosition(newPlatform);
         
+        var positionTo = (newPlatform.MoveRight_Left ? -100 : backgroundWidth + 100);
+        var repositionCamera =  CCActionMoveTo(duration: platformMoveSpeed, position:  ccp(positionTo, newPlatform.position.y));
+        newPlatform.runAction(repositionCamera);
         newPlatform.physicsBody.collisionType = "platform";
         platformLayer.addChild(newPlatform);
         platforms.append(newPlatform);
+        println(newPlatform.position.y);
     }
     
     func generateRandomPlatformPosition(sprite: NewPlatform){
