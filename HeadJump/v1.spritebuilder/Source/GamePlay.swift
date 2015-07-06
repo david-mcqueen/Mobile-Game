@@ -65,6 +65,7 @@ class GamePlay: CCNode, CCPhysicsCollisionDelegate {
 
         spawnNewPlatform();
         spawnNewPlatform();
+        
     }
 
 
@@ -264,6 +265,9 @@ class GamePlay: CCNode, CCPhysicsCollisionDelegate {
         }else{
             //Animation for the player not being able to fly any more?
         }
+        
+        var frame = CCSpriteFrame(imageNamed: "Resources/Dave_Rotated.png") as CCSpriteFrame
+        hero.spriteFrame = frame;
         
         
     }
