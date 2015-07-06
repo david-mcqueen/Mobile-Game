@@ -66,6 +66,22 @@ class GamePlay: CCNode, CCPhysicsCollisionDelegate {
         spawnNewPlatform();
         spawnNewPlatform();
         
+        var myLoadedUIImage = Load.image("myImageKey");
+        
+        
+//
+//        var frame = CCSpriteFrame(texture: myLoadedUIImage, rectInPixels: hero.spriteFrame.rect, rotated: false, offset: 0, originalSize: 0);
+////        CCSpriteFrame(imageNamed: myLoadedUIImage) as CCSpriteFrame
+//        hero.spriteFrame = frame;
+//        
+        
+        var newTexture = CCTexture(CGImage: myLoadedUIImage.CGImage, contentScale: 1.0)
+        var frame = CCSpriteFrame(texture: newTexture, rectInPixels: hero.spriteFrame.rect, rotated: false, offset: CGPoint(x: 0.0, y: 0.0), originalSize: hero.spriteFrame.rect.size)
+    
+        
+            hero.spriteFrame = frame;
+        
+        
     }
 
 
@@ -266,8 +282,8 @@ class GamePlay: CCNode, CCPhysicsCollisionDelegate {
             //Animation for the player not being able to fly any more?
         }
         
-        var frame = CCSpriteFrame(imageNamed: "Resources/Dave_Rotated.png") as CCSpriteFrame
-        hero.spriteFrame = frame;
+//        var frame = CCSpriteFrame(imageNamed: "Resources/Dave_Rotated.png") as CCSpriteFrame
+//        hero.spriteFrame = frame;
         
         
     }

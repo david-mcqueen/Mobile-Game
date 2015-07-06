@@ -11,6 +11,7 @@
 		5B121038197487F2004C1E1D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B737893E1807617C0076A88C /* AppDelegate.m */; };
 		797051F61B3AB15D00EFCE2F /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797051F51B3AB15D00EFCE2F /* Platform.swift */; };
 		79C9EDA01B4AF4800080843E /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C9ED9F1B4AF4800080843E /* GamePlay.swift */; };
+		79C9EDA41B4B1B460080843E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C9EDA31B4B1B460080843E /* Utilities.swift */; };
 		7A046D7919E84ED5004C4763 /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A046D7519E84C36004C4763 /* MainScene.swift */; };
 		7A10CE5619F32FB0001673C3 /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A046D7519E84C36004C4763 /* MainScene.swift */; };
 		7A40360419DDEE84007B6E8F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A40360319DDEE84007B6E8F /* main.m */; };
@@ -162,6 +163,7 @@
 		5BA4619E1974C88900785744 /* AndroidManifest.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = AndroidManifest.xml; path = Platforms/Android/AndroidManifest.xml; sourceTree = "<group>"; };
 		797051F51B3AB15D00EFCE2F /* Platform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Platform.swift; path = Classes/Platform.swift; sourceTree = "<group>"; };
 		79C9ED9F1B4AF4800080843E /* GamePlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamePlay.swift; path = Source/GamePlay.swift; sourceTree = "<group>"; };
+		79C9EDA31B4B1B460080843E /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = Classes/Utilities.swift; sourceTree = "<group>"; };
 		7A046D7519E84C36004C4763 /* MainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainScene.swift; path = Source/MainScene.swift; sourceTree = "<group>"; };
 		7A4035FF19DDEE84007B6E8F /* v1 Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "v1 Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A40360219DDEE84007B6E8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Platforms/Mac/Info.plist; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 				79C9ED9F1B4AF4800080843E /* GamePlay.swift */,
 				797051F51B3AB15D00EFCE2F /* Platform.swift */,
 				D352B48019EC608A00829775 /* MetalShaders */,
+				79C9EDA31B4B1B460080843E /* Utilities.swift */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -818,6 +821,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79C9EDA41B4B1B460080843E /* Utilities.swift in Sources */,
 				79C9EDA01B4AF4800080843E /* GamePlay.swift in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 				7A046D7919E84ED5004C4763 /* MainScene.swift in Sources */,
