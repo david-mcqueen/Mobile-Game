@@ -90,7 +90,9 @@ class GamePlay: CCNode, CCPhysicsCollisionDelegate {
             hero.spriteFrame = frame;
     }
     
+    //Manipulate an original image, to be scaled to a specific width!
     func imageWithImage(inout sourceImage: UIImage, i_width: CGFloat){
+        //Mark sourceImage with 'inout' - Pass by reference!
         var oldWidth: CGFloat = sourceImage.size.width;
         var scaleFactor: CGFloat = i_width / oldWidth;
         
