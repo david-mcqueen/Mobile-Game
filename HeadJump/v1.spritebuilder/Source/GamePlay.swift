@@ -66,8 +66,10 @@ class GamePlay: CCNode, CCPhysicsCollisionDelegate {
         spawnNewPlatform();
         spawnNewPlatform();
         
-        var myLoadedUIImage = Load.image("myImageKey");
-        
+        var myLoadedUIImage: UIImage = Load.image("myImageKey");
+        imageWithImage(&myLoadedUIImage, i_width: hero.spriteFrame.rect.width);
+        println("Sprite width: \(hero.spriteFrame.rect.width)");
+        println("Image width: \(myLoadedUIImage.size.width)");
         
 //
 //        var frame = CCSpriteFrame(texture: myLoadedUIImage, rectInPixels: hero.spriteFrame.rect, rotated: false, offset: 0, originalSize: 0);
@@ -76,12 +78,30 @@ class GamePlay: CCNode, CCPhysicsCollisionDelegate {
 //        
         
         var newTexture = CCTexture(CGImage: myLoadedUIImage.CGImage, contentScale: 1.0)
-        var frame = CCSpriteFrame(texture: newTexture, rectInPixels: hero.spriteFrame.rect, rotated: false, offset: CGPoint(x: 0.0, y: 0.0), originalSize: hero.spriteFrame.rect.size)
+        var frame = CCSpriteFrame(
+            texture: newTexture,
+            rectInPixels: CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: myLoadedUIImage.size),
+            rotated: false,
+            offset: CGPoint(x: 0.0, y: 0.0),
+            originalSize: myLoadedUIImage.size
+        );
     
         
             hero.spriteFrame = frame;
+    }
+    
+    func imageWithImage(inout sourceImage: UIImage, i_width: CGFloat){
+        var oldWidth: CGFloat = sourceImage.size.width;
+        var scaleFactor: CGFloat = i_width / oldWidth;
         
+        var newHeight: CGFloat = sourceImage.size.height * scaleFactor;
+        var newWidth: CGFloat = oldWidth * scaleFactor;
         
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight));
+        sourceImage.drawInRect(CGRectMake(0, 0, newWidth, newHeight));
+        
+        sourceImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
     }
 
 
@@ -89,8 +109,8 @@ class GamePlay: CCNode, CCPhysicsCollisionDelegate {
     override func fixedUpdate(delta: CCTime) {
         heightAboveGround = gamePhysicsNode.convertToWorldSpace(hero.position).y - hero.contentSize.height;
 
-        println("Ground \(gamePhysicsNode.convertToWorldSpace(backgroundGround.position).y)")
-        println("Hero  \(gamePhysicsNode.convertToWorldSpace(hero.position).y)");
+//        println("Ground \(gamePhysicsNode.convertToWorldSpace(backgroundGround.position).y)")
+//        println("Hero  \(gamePhysicsNode.convertToWorldSpace(hero.position).y)");
         heightLabel.string = String(Int(heightAboveGround));
 
         if (heightAboveGround > lastPlayerHeight){
