@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5B121030197484FA004C1E1D /* vActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B12102F197484FA004C1E1D /* vActivity.m */; };
 		5B121038197487F2004C1E1D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B737893E1807617C0076A88C /* AppDelegate.m */; };
+		795290AD1B558B790028D505 /* CameraOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795290AC1B558B790028D505 /* CameraOverlay.swift */; };
 		797051F61B3AB15D00EFCE2F /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797051F51B3AB15D00EFCE2F /* Platform.swift */; };
 		79C9EDA01B4AF4800080843E /* GamePlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C9ED9F1B4AF4800080843E /* GamePlay.swift */; };
 		79C9EDA41B4B1B460080843E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C9EDA31B4B1B460080843E /* Utilities.swift */; };
@@ -161,6 +162,8 @@
 		5B121033197485FE004C1E1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Platforms/Android/Info.plist; sourceTree = "<group>"; };
 		5B121034197485FE004C1E1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Platforms/iOS/Info.plist; sourceTree = "<group>"; };
 		5BA4619E1974C88900785744 /* AndroidManifest.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = AndroidManifest.xml; path = Platforms/Android/AndroidManifest.xml; sourceTree = "<group>"; };
+		795290A81B55825C0028D505 /* circleOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = circleOverlay.h; path = Source/circleOverlay.h; sourceTree = "<group>"; };
+		795290AC1B558B790028D505 /* CameraOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraOverlay.swift; path = Classes/CameraOverlay.swift; sourceTree = "<group>"; };
 		797051F51B3AB15D00EFCE2F /* Platform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Platform.swift; path = Classes/Platform.swift; sourceTree = "<group>"; };
 		79C9ED9F1B4AF4800080843E /* GamePlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GamePlay.swift; path = Source/GamePlay.swift; sourceTree = "<group>"; };
 		79C9EDA31B4B1B460080843E /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = Classes/Utilities.swift; sourceTree = "<group>"; };
@@ -446,6 +449,8 @@
 				797051F51B3AB15D00EFCE2F /* Platform.swift */,
 				D352B48019EC608A00829775 /* MetalShaders */,
 				79C9EDA31B4B1B460080843E /* Utilities.swift */,
+				795290A81B55825C0028D505 /* circleOverlay.h */,
+				795290AC1B558B790028D505 /* CameraOverlay.swift */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -827,6 +832,7 @@
 				7A046D7919E84ED5004C4763 /* MainScene.swift in Sources */,
 				797051F61B3AB15D00EFCE2F /* Platform.swift in Sources */,
 				5B121038197487F2004C1E1D /* AppDelegate.m in Sources */,
+				795290AD1B558B790028D505 /* CameraOverlay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

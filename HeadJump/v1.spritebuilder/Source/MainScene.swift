@@ -11,13 +11,18 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate, UINavigationControllerDeleg
         CCDirector.sharedDirector().replaceScene(gamePlayScene);
     }
     
+    
     func camera(){
         //Open the camera, take a photo of the user, save the image, and add as the hero image
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .Camera
+        imagePicker.allowsEditing = true;
         imagePicker.cameraCaptureMode = .Photo;
+      
+        var cameraOverlayView: UIView!;
         
+        imagePicker.cameraOverlayView = CameraOverlayView(frame: UIViewController().view.bounds)
         /*
             Access the Library
             imagePicker.sourceType = .PhotoLibrary
@@ -63,6 +68,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate, UINavigationControllerDeleg
         
         // Save.image("myImageKey", image)
         Save.image("myImageKey", image);
+        
     }
     
     
